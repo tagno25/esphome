@@ -77,7 +77,7 @@ void Servo::internal_write(float value) {
   this->current_value_ = value;
 }
 
-void Servo::set_tilt_lambda(std::function<optional<float>()> &&tilt_f) { this->current_value_ = tilt_f; }
+void Servo::set_tilt_lambda(std::function<optional<float>()> &&value) { this->current_value_ = value; }
 
 }  // namespace servo
 }  // namespace esphome
