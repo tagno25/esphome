@@ -12,6 +12,7 @@ from esphome.const import (
     CONF_LEVEL,
     CONF_RESTORE,
     CONF_TRANSITION_LENGTH,
+    CONF_TILT_LAMBDA,
 )
 
 servo_ns = cg.esphome_ns.namespace("servo")
@@ -35,6 +36,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Optional(
             CONF_TRANSITION_LENGTH, default="0s"
         ): cv.positive_time_period_milliseconds,
+        cv.Optional(CONF_TILT_LAMBDA): cv.returning_lambda,
     }
 ).extend(cv.COMPONENT_SCHEMA)
 
@@ -51,6 +53,11 @@ async def to_code(config):
     cg.add(var.set_restore(config[CONF_RESTORE]))
     cg.add(var.set_auto_detach_time(config[CONF_AUTO_DETACH_TIME]))
     cg.add(var.set_transition_length(config[CONF_TRANSITION_LENGTH]))
+    if CONF_TILT_LAMBDA in config:
+        tilt_template_ = await cg.process_lambda(
+            config[CONF_TILT_LAMBDA], [], return_type=cg.optional.template(float)
+        )
+        cg.add(var.set_tilt_lambda(tilt_template_))
 
 
 @automation.register_action(

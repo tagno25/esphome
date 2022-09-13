@@ -41,6 +41,7 @@ class Servo : public Component {
   void set_restore(bool restore) { restore_ = restore; }
   void set_auto_detach_time(uint32_t auto_detach_time) { auto_detach_time_ = auto_detach_time; }
   void set_transition_length(uint32_t transition_length) { transition_length_ = transition_length; }
+  void set_tilt_lambda(std::function<optional<float>()> &&tilt_f);
 
  protected:
   void save_level_(float v) { this->rtc_.save(&v); }
